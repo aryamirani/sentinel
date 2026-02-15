@@ -46,7 +46,7 @@ public class TransactionChangeStreamListener {
         if (body == null) return;
 
         try {
-            String transactionId = body.getObjectId("_id").toString();
+            String transactionId = body.getString("_id");
             log.debug("change stream detected new transaction={}", transactionId);
 
             Transaction transaction = mongoTemplate.getConverter().read(Transaction.class, body);

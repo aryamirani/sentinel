@@ -13,7 +13,7 @@ public class VelocityService {
 
     private final ReactiveRedisTemplate<String, String> redisTemplate;
 
-    public VelocityService(ReactiveRedisTemplate<String, String> redisTemplate) {
+    public VelocityService(@org.springframework.beans.factory.annotation.Qualifier("reactiveStringRedisTemplate") ReactiveRedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
