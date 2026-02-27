@@ -1,7 +1,5 @@
 package com.sentinel.kafka;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -9,12 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class TransactionProducer {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionProducer.class);
+
 
     private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public TransactionProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Value("${sentinel.kafka.topic:transactions}")
     private String topic;

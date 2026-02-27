@@ -4,17 +4,19 @@ import com.sentinel.gateway.AlertWebSocketHandler;
 import com.sentinel.model.AlertPayload;
 import com.sentinel.model.RiskAssessment;
 import com.sentinel.model.Transaction;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AlertService {
+    public AlertService(AlertWebSocketHandler webSocketHandler) {
+        this.webSocketHandler = webSocketHandler;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AlertService.class);
+
 
     private final AlertWebSocketHandler webSocketHandler;
 

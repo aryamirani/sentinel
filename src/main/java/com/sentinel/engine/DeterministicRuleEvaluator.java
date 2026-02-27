@@ -4,15 +4,18 @@ import com.sentinel.model.Customer;
 import com.sentinel.model.Transaction;
 import com.sentinel.repository.CustomerRepository;
 import com.sentinel.service.VelocityService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class DeterministicRuleEvaluator {
+    public DeterministicRuleEvaluator(VelocityService velocityService, CustomerRepository customerRepository) {
+        this.velocityService = velocityService;
+        this.customerRepository = customerRepository;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DeterministicRuleEvaluator.class);
+
 
     private final VelocityService velocityService;
     private final CustomerRepository customerRepository;
@@ -59,7 +62,7 @@ public class DeterministicRuleEvaluator {
                 if (!knownDevice) {
                     return DEVICE_ANOMALY_SCORE;
                 }
-                if (transaction.getDevice().isVpnDetected() || transaction.getDevice().isEmulatorDetected()) {
+                if (transaction.getDevice().getVpnDetected() || transaction.getDevice().getEmulatorDetected()) {
                     return DEVICE_ANOMALY_SCORE * 0.5;
                 }
                 return 0.0;

@@ -1,8 +1,6 @@
 package com.sentinel.engine;
 
 import com.sentinel.model.Transaction;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Component;
@@ -10,10 +8,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.*;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class TopologyTraverser {
+    public TopologyTraverser(ReactiveMongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TopologyTraverser.class);
+
 
     private final ReactiveMongoTemplate mongoTemplate;
 

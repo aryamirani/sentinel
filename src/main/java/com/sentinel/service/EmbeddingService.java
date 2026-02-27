@@ -1,7 +1,5 @@
 package com.sentinel.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,10 +8,14 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class EmbeddingService {
+    public EmbeddingService(WebClient embeddingWebClient) {
+        this.embeddingWebClient = embeddingWebClient;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EmbeddingService.class);
+
 
     private final WebClient embeddingWebClient;
 

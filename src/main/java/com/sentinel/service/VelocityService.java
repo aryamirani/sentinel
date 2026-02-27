@@ -1,19 +1,21 @@
 package com.sentinel.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class VelocityService {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VelocityService.class);
+
 
     private final ReactiveRedisTemplate<String, String> redisTemplate;
+
+    public VelocityService(ReactiveRedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     private static final Duration WINDOW_DURATION = Duration.ofMinutes(5);
     private static final long VELOCITY_THRESHOLD = 10;

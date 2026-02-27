@@ -37,7 +37,7 @@ class TopologyTraverserTest {
         Transaction txn = Transaction.builder()
             .id("txn-002")
             .entityId("entity-002")
-            .senderAccountId("acc-001")
+            .senderAccountId(null)
             .timestamp(Instant.now())
             .build();
 

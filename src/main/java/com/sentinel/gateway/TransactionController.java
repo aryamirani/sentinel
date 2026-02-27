@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentinel.kafka.TransactionProducer;
 import com.sentinel.model.Transaction;
 import com.sentinel.repository.TransactionRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +15,17 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/transactions")
-@RequiredArgsConstructor
 public class TransactionController {
+    public TransactionController(TransactionProducer transactionProducer, TransactionRepository transactionRepository, ObjectMapper objectMapper) {
+        this.transactionProducer = transactionProducer;
+        this.transactionRepository = transactionRepository;
+        this.objectMapper = objectMapper;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionController.class);
+
 
     private final TransactionProducer transactionProducer;
     private final TransactionRepository transactionRepository;

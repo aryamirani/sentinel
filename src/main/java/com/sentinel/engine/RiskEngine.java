@@ -4,18 +4,25 @@ import com.sentinel.model.RiskAssessment;
 import com.sentinel.model.Transaction;
 import com.sentinel.repository.TransactionRepository;
 import com.sentinel.service.AlertService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class RiskEngine {
+    public RiskEngine(DeterministicRuleEvaluator ruleEvaluator, VectorSearchEvaluator vectorEvaluator, TopologyTraverser topologyTraverser, RiskScoreAggregator scoreAggregator, TransactionRepository transactionRepository, AlertService alertService) {
+        this.ruleEvaluator = ruleEvaluator;
+        this.vectorEvaluator = vectorEvaluator;
+        this.topologyTraverser = topologyTraverser;
+        this.scoreAggregator = scoreAggregator;
+        this.transactionRepository = transactionRepository;
+        this.alertService = alertService;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RiskEngine.class);
+
 
     private final DeterministicRuleEvaluator ruleEvaluator;
     private final VectorSearchEvaluator vectorEvaluator;

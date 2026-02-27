@@ -2,8 +2,6 @@ package com.sentinel.engine;
 
 import com.sentinel.model.Transaction;
 import com.sentinel.service.EmbeddingService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Component;
@@ -12,10 +10,15 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class VectorSearchEvaluator {
+    public VectorSearchEvaluator(EmbeddingService embeddingService, ReactiveMongoTemplate mongoTemplate) {
+        this.embeddingService = embeddingService;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VectorSearchEvaluator.class);
+
 
     private final EmbeddingService embeddingService;
     private final ReactiveMongoTemplate mongoTemplate;

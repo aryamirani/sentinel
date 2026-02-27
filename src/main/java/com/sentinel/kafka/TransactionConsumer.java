@@ -3,8 +3,6 @@ package com.sentinel.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentinel.model.Transaction;
 import com.sentinel.repository.TransactionRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.MDC;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,10 +12,15 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class TransactionConsumer {
+    public TransactionConsumer(TransactionRepository transactionRepository, ObjectMapper objectMapper) {
+        this.transactionRepository = transactionRepository;
+        this.objectMapper = objectMapper;
+    }
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionConsumer.class);
+
 
     private final TransactionRepository transactionRepository;
     private final ObjectMapper objectMapper;

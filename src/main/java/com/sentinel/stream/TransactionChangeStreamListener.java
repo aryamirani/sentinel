@@ -1,9 +1,8 @@
 package com.sentinel.stream;
 
+import org.springframework.data.mongodb.core.ChangeStreamOptions;
 import com.sentinel.engine.RiskEngine;
 import com.sentinel.model.Transaction;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -14,10 +13,16 @@ import org.springframework.stereotype.Component;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class TransactionChangeStreamListener {
+    public TransactionChangeStreamListener(ReactiveMongoTemplate mongoTemplate, RiskEngine riskEngine) {
+        this.mongoTemplate = mongoTemplate;
+        this.riskEngine = riskEngine;
+    }
+
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionChangeStreamListener.class);
+
 
     private final ReactiveMongoTemplate mongoTemplate;
     private final RiskEngine riskEngine;
@@ -26,7 +31,11 @@ public class TransactionChangeStreamListener {
     public void startListening() {
         log.info("starting transaction change stream listener");
 
-        mongoTemplate.changeStream("transactions", match(where("operationType").is("insert")), Document.class)
+        ChangeStreamOptions options = ChangeStreamOptions.builder()
+            .filter(org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation(match(where("operationType").is("insert"))))
+            .build();
+
+        mongoTemplate.changeStream("transactions", options, Document.class)
             .doOnNext(this::handleChangeEvent)
             .doOnError(e -> log.error("change stream error", e))
             .subscribe();

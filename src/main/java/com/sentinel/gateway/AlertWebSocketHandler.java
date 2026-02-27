@@ -3,7 +3,6 @@ package com.sentinel.gateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentinel.model.AlertPayload;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -12,9 +11,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-@Slf4j
 @Component
 public class AlertWebSocketHandler implements WebSocketHandler {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AlertWebSocketHandler.class);
+
 
     private final Sinks.Many<AlertPayload> alertSink = Sinks.many().multicast().onBackpressureBuffer();
     private final ObjectMapper objectMapper;
